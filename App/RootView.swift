@@ -33,9 +33,12 @@ struct RootView: View {
                 .buttonStyle(.borderedProminent)
                 .disabled(model.isRefreshing)
 
-                if model.needsLogin {
-                    Button("Log in to Claude") { showLogin = true }
+                Button {
+                    showLogin = true
+                } label: {
+                    Label(model.needsLogin ? "Log in to Claude" : "Re-login to Claude", systemImage: "person.crop.circle")
                 }
+                .font(.callout)
             }
             .padding()
             .navigationTitle("Claude Usage")
@@ -53,7 +56,10 @@ struct RootView: View {
                     Task { await model.refresh() }
                 }
             }
-            .task { await model.refresh() }
+            .task {
+                await model.refresh()
+                if model.snapshot == nil { showLogin = true }
+            }
         }
     }
 }

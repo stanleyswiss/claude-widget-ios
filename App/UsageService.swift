@@ -65,6 +65,7 @@ final class UsageService: NSObject, WKNavigationDelegate {
     /// Fetches usage; resolves org first if unknown. Persists snapshot on success.
     func refresh() async -> Result {
         await waitForLoad()
+        print("[ClaudeUsage] refresh: loaded url=\(webView.url?.absoluteString ?? "nil") orgId=\(store.orgId ?? "nil") auth=\(store.authState.rawValue)")
 
         var org = store.orgId
         if org == nil {
@@ -113,11 +114,17 @@ final class UsageService: NSObject, WKNavigationDelegate {
                 js, arguments: ["path": path], in: nil, contentWorld: .page)
             guard let s = value as? String,
                   let obj = try? JSONSerialization.jsonObject(with: Data(s.utf8)) as? [String: Any],
-                  let status = obj["status"] as? Int else { return nil }
-            return JSResult(status: status,
-                            toLogin: obj["toLogin"] as? Bool ?? false,
-                            body: obj["body"] as? String ?? "")
+                  let status = obj["status"] as? Int else {
+                print("[ClaudeUsage] jsFetch \(path): unreadable JS result")
+                return nil
+            }
+            let result = JSResult(status: status,
+                                  toLogin: obj["toLogin"] as? Bool ?? false,
+                                  body: obj["body"] as? String ?? "")
+            print("[ClaudeUsage] jsFetch \(path) -> status=\(result.status) toLogin=\(result.toLogin) body=\(result.body.prefix(140))")
+            return result
         } catch {
+            print("[ClaudeUsage] jsFetch \(path) threw: \(error)")
             return nil
         }
     }
