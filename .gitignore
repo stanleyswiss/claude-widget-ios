@@ -21,3 +21,6 @@ Packages/
 # CogniLayer (local tooling)
 .cognilayer/
 .cognilayer-backup/
+
+# XcodeGen output (regenerate with `xcodegen generate`)
+*.xcodeproj
