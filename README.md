@@ -49,8 +49,13 @@ To use a different bundle id, change `com.stanleyswiss.*` in `project.yml`, the 
 `*.entitlements` files, and `Core/Sources/ClaudeUsageCore/Constants.swift`, then
 re-run `xcodegen generate`.
 
+## Login note
+
+Claude sign-in happens in an embedded web view. Use **email** or **Continue with
+Apple** — Google blocks OAuth inside embedded web views (`disallowed_useragent`),
+so the "Continue with Google" button won't complete there.
+
 ## Status
 
-v1 logic and UI are complete and build for the simulator; on-device signing and
-validation is the final manual step. See `docs/superpowers/` for the full spec
-and plan.
+v1 is complete and validated on device — the app and the home/lock-screen widgets
+show live 5H/7D usage. See `docs/superpowers/` for the full spec and plan.
