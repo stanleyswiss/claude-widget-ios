@@ -24,3 +24,6 @@ Packages/
 
 # XcodeGen output (regenerate with `xcodegen generate`)
 *.xcodeproj
+
+# Local Claude Code settings
+.claude/settings.local.json
