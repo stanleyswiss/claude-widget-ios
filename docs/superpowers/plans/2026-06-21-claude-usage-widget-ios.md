@@ -45,6 +45,9 @@ claude-widget/
 Run: `swift --version && xcodebuild -version`
 Expected: Swift 5.9 or newer, Xcode 15 or newer.
 
+If `xcodebuild` errors with "requires Xcode, but active developer directory is a command line tools instance", select full Xcode:
+`sudo xcode-select -s /Applications/Xcode.app` (or prefix every `xcodebuild` command below with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`).
+
 - [ ] **Step 2: Install XcodeGen**
 
 Run: `brew install xcodegen && xcodegen --version`
@@ -767,6 +770,9 @@ options:
   deploymentTarget:
     iOS: "16.0"
   createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
 packages:
   ClaudeUsageCore:
     path: Core
