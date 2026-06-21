@@ -16,7 +16,7 @@
 - **App Group:** `group.com.stanleyswiss.claudeusage`
 - **BG task id:** `com.stanleyswiss.claudeusage.refresh`
 - **Min iOS:** 16.0
-- **Repo root:** `/Users/stanley/Downloads/08_Development_Projects/apple/claude-widget`
+- **Repo root:** `the cloned repository root`
 - **Commit style:** `[type] what and why` (matches project rule). Run `git add -A && git commit` from repo root in each commit step.
 
 Directory layout this plan produces:

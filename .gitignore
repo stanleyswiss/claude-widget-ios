@@ -27,3 +27,6 @@ Packages/
 
 # Local Claude Code settings
 .claude/settings.local.json
+
+# Personal tooling config (not for the public repo)
+CLAUDE.md
