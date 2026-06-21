@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "Read(//private/tmp/**)",
+      "Bash(curl -s https://api.github.com/repos/utaysi/claude-usage-widget)",
+      "Bash(curl -s \"https://api.github.com/repos/utaysi/claude-usage-widget/git/trees/HEAD?recursive=1\")"
+    ]
+  }
+}
