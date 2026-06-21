@@ -42,10 +42,10 @@ open ClaudeUsage.xcodeproj
 
 In Xcode: set your signing **Team** on both targets (`ClaudeUsage` and
 `ClaudeUsageWidgetExtension`), confirm the App Group
-`group.com.stanley.claudeusage` is enabled on both, run on your iPhone, log in to
+`group.com.stanleyswiss.claudeusage` is enabled on both, run on your iPhone, log in to
 Claude once, then add the widgets from the home-screen / lock-screen gallery.
 
-To use a different bundle id, change `com.stanley.*` in `project.yml`, the two
+To use a different bundle id, change `com.stanleyswiss.*` in `project.yml`, the two
 `*.entitlements` files, and `Core/Sources/ClaudeUsageCore/Constants.swift`, then
 re-run `xcodegen generate`.
 

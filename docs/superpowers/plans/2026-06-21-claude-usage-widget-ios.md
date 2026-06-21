@@ -12,9 +12,9 @@
 
 ## Conventions (used throughout)
 
-- **Bundle id base:** `com.stanley.claudeusage` (app), `com.stanley.claudeusage.widget` (extension). Change `stanley` if you prefer — keep all three values below consistent if you do.
-- **App Group:** `group.com.stanley.claudeusage`
-- **BG task id:** `com.stanley.claudeusage.refresh`
+- **Bundle id base:** `com.stanleyswiss.claudeusage` (app), `com.stanleyswiss.claudeusage.widget` (extension). Change `stanley` if you prefer — keep all three values below consistent if you do.
+- **App Group:** `group.com.stanleyswiss.claudeusage`
+- **BG task id:** `com.stanleyswiss.claudeusage.refresh`
 - **Min iOS:** 16.0
 - **Repo root:** `/Users/stanley/Downloads/08_Development_Projects/apple/claude-widget`
 - **Commit style:** `[type] what and why` (matches project rule). Run `git add -A && git commit` from repo root in each commit step.
@@ -181,8 +181,8 @@ public enum ClaudeAPI {
 }
 
 public enum AppConfig {
-    public static let appGroupID = "group.com.stanley.claudeusage"
-    public static let bgRefreshTaskID = "com.stanley.claudeusage.refresh"
+    public static let appGroupID = "group.com.stanleyswiss.claudeusage"
+    public static let bgRefreshTaskID = "com.stanleyswiss.claudeusage.refresh"
     public static let widgetKind = "ClaudeUsageWidget"
     public static let deepLinkURL = "claudeusage://refresh"
 }
@@ -766,7 +766,7 @@ Goal: a generated `ClaudeUsage.xcodeproj` with both targets that **compiles and 
 ```yaml
 name: ClaudeUsage
 options:
-  bundleIdPrefix: com.stanley
+  bundleIdPrefix: com.stanleyswiss
   deploymentTarget:
     iOS: "16.0"
   createIntermediateGroups: true
@@ -786,7 +786,7 @@ targets:
       - target: ClaudeUsageWidgetExtension
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.stanley.claudeusage
+        PRODUCT_BUNDLE_IDENTIFIER: com.stanleyswiss.claudeusage
         INFOPLIST_FILE: App/Info.plist
         CODE_SIGN_ENTITLEMENTS: App/ClaudeUsage.entitlements
         CURRENT_PROJECT_VERSION: "1"
@@ -801,7 +801,7 @@ targets:
       - package: ClaudeUsageCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.stanley.claudeusage.widget
+        PRODUCT_BUNDLE_IDENTIFIER: com.stanleyswiss.claudeusage.widget
         INFOPLIST_FILE: Widget/Info.plist
         CODE_SIGN_ENTITLEMENTS: Widget/ClaudeUsageWidget.entitlements
         CURRENT_PROJECT_VERSION: "1"
@@ -819,7 +819,7 @@ targets:
 <dict>
     <key>com.apple.security.application-groups</key>
     <array>
-        <string>group.com.stanley.claudeusage</string>
+        <string>group.com.stanleyswiss.claudeusage</string>
     </array>
 </dict>
 </plist>
@@ -834,7 +834,7 @@ targets:
 <dict>
     <key>com.apple.security.application-groups</key>
     <array>
-        <string>group.com.stanley.claudeusage</string>
+        <string>group.com.stanleyswiss.claudeusage</string>
     </array>
 </dict>
 </plist>
@@ -862,7 +862,7 @@ targets:
     </dict>
     <key>BGTaskSchedulerPermittedIdentifiers</key>
     <array>
-        <string>com.stanley.claudeusage.refresh</string>
+        <string>com.stanleyswiss.claudeusage.refresh</string>
     </array>
     <key>CFBundleURLTypes</key>
     <array>
@@ -1772,7 +1772,7 @@ Expected: no red signing errors; provisioning profiles generate for both bundle 
 
 - [ ] **Step 3: Confirm App Group capability on both targets**
 
-In Signing & Capabilities for each target, confirm the **App Groups** capability lists `group.com.stanley.claudeusage` and is checked. (It comes from the entitlements files; Xcode may ask to register it — allow.)
+In Signing & Capabilities for each target, confirm the **App Groups** capability lists `group.com.stanleyswiss.claudeusage` and is checked. (It comes from the entitlements files; Xcode may ask to register it — allow.)
 Expected: App Group enabled on app and widget.
 
 - [ ] **Step 4: Select your iPhone and Run**

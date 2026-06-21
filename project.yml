@@ -1,6 +1,6 @@
 name: ClaudeUsage
 options:
-  bundleIdPrefix: com.stanley
+  bundleIdPrefix: com.stanleyswiss
   deploymentTarget:
     iOS: "16.0"
   createIntermediateGroups: true
@@ -20,7 +20,7 @@ targets:
       - target: ClaudeUsageWidgetExtension
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.stanley.claudeusage
+        PRODUCT_BUNDLE_IDENTIFIER: com.stanleyswiss.claudeusage
         INFOPLIST_FILE: App/Info.plist
         CODE_SIGN_ENTITLEMENTS: App/ClaudeUsage.entitlements
         CURRENT_PROJECT_VERSION: "1"
@@ -35,7 +35,7 @@ targets:
       - package: ClaudeUsageCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.stanley.claudeusage.widget
+        PRODUCT_BUNDLE_IDENTIFIER: com.stanleyswiss.claudeusage.widget
         INFOPLIST_FILE: Widget/Info.plist
         CODE_SIGN_ENTITLEMENTS: Widget/ClaudeUsageWidget.entitlements
         CURRENT_PROJECT_VERSION: "1"
