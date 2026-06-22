@@ -2,14 +2,6 @@ import WidgetKit
 import SwiftUI
 import ClaudeUsageCore
 
-private func levelColor(_ utilization: Double) -> Color {
-    switch UsageLevel(utilization: utilization) {
-    case .calm: return .green
-    case .warn: return .orange
-    case .critical: return .red
-    }
-}
-
 /// Applies the iOS 17+ required container background; no-op on iOS 16.
 private struct ContainerBackground: ViewModifier {
     func body(content: Content) -> some View {
@@ -36,11 +28,11 @@ struct UsageWidgetView: View {
             NeedsLoginView(family: family)
         } else if let snap = entry.snapshot {
             switch family {
-            case .systemSmall:          SmallView(snapshot: snap)
-            case .systemMedium:         MediumView(snapshot: snap)
+            case .systemSmall:          SmallView(snapshot: snap, accentHex: entry.accentHex)
+            case .systemMedium:         MediumView(snapshot: snap, accentHex: entry.accentHex)
             case .accessoryRectangular: RectView(snapshot: snap)
             case .accessoryCircular:    CircularView(window: snap.fiveHour)
-            default:                    SmallView(snapshot: snap)
+            default:                    SmallView(snapshot: snap, accentHex: entry.accentHex)
             }
         } else {
             Text("—").font(.headline).foregroundStyle(.secondary)
@@ -67,18 +59,20 @@ private struct NeedsLoginView: View {
 private struct BarRow: View {
     let title: String
     let window: UsageWindow
+    let accentHex: String?
+    private var color: Color { UsageTint.resolve(utilization: window.utilization, hex: accentHex) }
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack {
                 Text(title).font(.caption).bold()
                 Spacer()
                 Text(UsageFormat.percent(window.utilization))
-                    .font(.caption).bold().foregroundStyle(levelColor(window.utilization))
+                    .font(.caption).bold().foregroundStyle(color)
             }
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule().fill(.quaternary)
-                    Capsule().fill(levelColor(window.utilization))
+                    Capsule().fill(color)
                         .frame(width: geo.size.width * min(window.utilization, 100) / 100)
                 }
             }
@@ -89,11 +83,12 @@ private struct BarRow: View {
 
 private struct SmallView: View {
     let snapshot: UsageSnapshot
+    let accentHex: String?
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("✳ CLAUDE").font(.caption2).bold().foregroundStyle(.secondary)
-            BarRow(title: "5H", window: snapshot.fiveHour)
-            BarRow(title: "1W", window: snapshot.sevenDay)
+            BarRow(title: "5H", window: snapshot.fiveHour, accentHex: accentHex)
+            BarRow(title: "1W", window: snapshot.sevenDay, accentHex: accentHex)
         }
         .padding(12)
     }
@@ -102,20 +97,22 @@ private struct SmallView: View {
 private struct MediumRow: View {
     let title: String
     let window: UsageWindow
+    let accentHex: String?
+    private var color: Color { UsageTint.resolve(utilization: window.utilization, hex: accentHex) }
     var body: some View {
         HStack(spacing: 8) {
             Text(title).font(.caption).bold().frame(width: 26, alignment: .leading)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule().fill(.quaternary)
-                    Capsule().fill(levelColor(window.utilization))
+                    Capsule().fill(color)
                         .frame(width: geo.size.width * min(window.utilization, 100) / 100)
                 }
             }
             .frame(height: 8)
             Text(UsageFormat.percent(window.utilization))
                 .font(.caption).bold().frame(width: 42, alignment: .trailing)
-                .foregroundStyle(levelColor(window.utilization))
+                .foregroundStyle(color)
             Text("resets \(window.resetsAt, style: .relative)")
                 .font(.caption2).foregroundStyle(.secondary)
                 .frame(width: 92, alignment: .leading)
@@ -125,6 +122,7 @@ private struct MediumRow: View {
 
 private struct MediumView: View {
     let snapshot: UsageSnapshot
+    let accentHex: String?
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
@@ -133,8 +131,8 @@ private struct MediumView: View {
                 Text("\(snapshot.fetchedAt, style: .relative) ago")
                     .font(.caption2).foregroundStyle(.secondary)
             }
-            MediumRow(title: "5H", window: snapshot.fiveHour)
-            MediumRow(title: "1W", window: snapshot.sevenDay)
+            MediumRow(title: "5H", window: snapshot.fiveHour, accentHex: accentHex)
+            MediumRow(title: "1W", window: snapshot.sevenDay, accentHex: accentHex)
         }
         .padding(14)
     }

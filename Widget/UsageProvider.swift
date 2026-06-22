@@ -6,6 +6,7 @@ struct UsageEntry: TimelineEntry {
     let date: Date
     let snapshot: UsageSnapshot?
     let needsLogin: Bool
+    let accentHex: String?
 
     static let sample = UsageEntry(
         date: Date(),
@@ -13,7 +14,8 @@ struct UsageEntry: TimelineEntry {
             fiveHour: UsageWindow(utilization: 62, resetsAt: Date(timeIntervalSinceNow: 2 * 3600 + 14 * 60)),
             sevenDay: UsageWindow(utilization: 38, resetsAt: Date(timeIntervalSinceNow: 4 * 86400)),
             fetchedAt: Date()),
-        needsLogin: false)
+        needsLogin: false,
+        accentHex: nil)
 }
 
 struct UsageProvider: TimelineProvider {
@@ -35,6 +37,7 @@ struct UsageProvider: TimelineProvider {
         let s = store()
         return UsageEntry(date: Date(),
                           snapshot: s?.loadSnapshot(),
-                          needsLogin: s?.authState == .needsLogin)
+                          needsLogin: s?.authState == .needsLogin,
+                          accentHex: s?.accentColorHex)
     }
 }
