@@ -19,10 +19,23 @@ built for personal sideloading (not the App Store).
 - Refresh happens on app open and via a best-effort `BGAppRefreshTask`; reset
   countdowns tick live on the widget.
 
+## Appearance & refresh
+
+- **Accent color:** pick your widget color in **Settings → Appearance** (presets
+  + a custom color picker; default orange). Bars and percentages still turn
+  **red at 90%+** as a near-limit warning, whatever color you choose.
+  (Lock-screen accessory widgets are tinted by iOS, so color is limited there.)
+- **Background refresh:** on a successful in-app fetch the app stores your
+  claude.ai cookies in the **Keychain**, so a `BGAppRefreshTask` can refresh
+  usage with a plain `URLSession` while the app is suspended. This is
+  **best-effort** — iOS schedules it on its own cadence (typically a few times a
+  day), and it only succeeds while Cloudflare's clearance cookie is still valid.
+  Tapping the widget (which opens the app) remains the always-reliable refresh.
+
 ## Project layout
 
 ```
-Core/        Swift package — pure logic (models, parsing, store), 25 unit tests
+Core/        Swift package — pure logic (models, parsing, store, fetcher), 34 unit tests
 App/         SwiftUI host app (login, WebView fetch, background refresh, settings)
 Widget/      WidgetKit extension (timeline provider + views)
 project.yml  XcodeGen spec (run `xcodegen generate` to (re)create the .xcodeproj)
