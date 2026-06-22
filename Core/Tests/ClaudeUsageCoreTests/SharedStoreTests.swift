@@ -27,4 +27,11 @@ final class SharedStoreTests: XCTestCase {
         XCTAssertEqual(store.orgId, "abc")
         XCTAssertEqual(store.authState, .ok)
     }
+
+    func testAccentColorHexRoundTrip() {
+        let store = SharedStore(defaults: makeDefaults())
+        XCTAssertNil(store.accentColorHex)
+        store.accentColorHex = "#FF9500"
+        XCTAssertEqual(store.accentColorHex, "#FF9500")
+    }
 }

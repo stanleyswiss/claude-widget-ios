@@ -11,6 +11,7 @@ public struct SharedStore {
     public static let snapshotKey = "usage.snapshot"
     public static let orgIdKey = "usage.orgId"
     public static let authStateKey = "usage.authState"
+    public static let accentColorHexKey = "usage.accentColorHex"
 
     private let defaults: UserDefaults
     public init(defaults: UserDefaults) { self.defaults = defaults }
@@ -40,5 +41,10 @@ public struct SharedStore {
     public var authState: AuthState {
         get { AuthState(rawValue: defaults.string(forKey: Self.authStateKey) ?? "") ?? .unknown }
         nonmutating set { defaults.set(newValue.rawValue, forKey: Self.authStateKey) }
+    }
+
+    public var accentColorHex: String? {
+        get { defaults.string(forKey: Self.accentColorHexKey) }
+        nonmutating set { defaults.set(newValue, forKey: Self.accentColorHexKey) }
     }
 }
