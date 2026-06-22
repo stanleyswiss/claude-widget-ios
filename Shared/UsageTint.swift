@@ -7,10 +7,15 @@ enum UsageTint {
     /// Preset swatches offered in Settings (default orange first).
     static let presets = ["#FF9500", "#FF5A1F", "#34C759", "#0A84FF", "#AF52DE", "#FF375F"]
 
+    /// The plain chosen accent color (no level logic).
+    static func color(hex: String?) -> Color {
+        Color(usageHex: hex ?? defaultAccentHex) ?? .orange
+    }
+
     /// Accent color for a usage level: red once at/over the limit, else the chosen accent.
     static func resolve(utilization: Double, hex: String?) -> Color {
         if utilization >= 90 { return .red }
-        return Color(usageHex: hex ?? defaultAccentHex) ?? .orange
+        return color(hex: hex)
     }
 }
 

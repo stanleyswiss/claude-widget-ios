@@ -86,7 +86,9 @@ private struct SmallView: View {
     let accentHex: String?
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("✳ CLAUDE").font(.caption2).bold().foregroundStyle(.secondary)
+            (Text("\u{2733}\u{FE0E} ").foregroundColor(UsageTint.color(hex: accentHex))
+                + Text("CLAUDE").foregroundColor(.secondary))
+                .font(.caption2).bold()
             BarRow(title: "5H", window: snapshot.fiveHour, accentHex: accentHex)
             BarRow(title: "1W", window: snapshot.sevenDay, accentHex: accentHex)
         }
@@ -126,7 +128,9 @@ private struct MediumView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("✳ CLAUDE USAGE").font(.caption2).bold().foregroundStyle(.secondary)
+                (Text("\u{2733}\u{FE0E} ").foregroundColor(UsageTint.color(hex: accentHex))
+                    + Text("CLAUDE USAGE").foregroundColor(.secondary))
+                    .font(.caption2).bold()
                 Spacer()
                 Text("\(snapshot.fetchedAt, style: .relative) ago")
                     .font(.caption2).foregroundStyle(.secondary)
