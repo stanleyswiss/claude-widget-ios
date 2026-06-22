@@ -23,15 +23,35 @@ enum BackgroundRefresh {
     private static func handle(_ task: BGAppRefreshTask) {
         schedule() // chain the next one
 
-        let work = Task { @MainActor in
-            let result = await AppModel.shared.service.refresh()
+        let work = Task {
+            let ok = await runFetch()
             WidgetCenter.shared.reloadAllTimelines()
-            if case .success = result {
-                task.setTaskCompleted(success: true)
-            } else {
-                task.setTaskCompleted(success: false)
-            }
+            task.setTaskCompleted(success: ok)
         }
         task.expirationHandler = { work.cancel() }
+    }
+
+    /// Cookie-based fetch (no WebKit). Keeps the last snapshot on a transient
+    /// failure so a Cloudflare lapse never shows a false "tap to log in".
+    private static func runFetch() async -> Bool {
+        guard let store = SharedStore.appGroup(),
+              let orgId = store.orgId,
+              let creds = Keychain.loadCredentials() else { return false }
+
+        let outcome = await UsageRemoteFetcher.fetchUsage(
+            session: .shared, orgId: orgId,
+            cookieHeader: creds.cookieHeader, userAgent: creds.userAgent, now: Date())
+
+        switch outcome {
+        case .success(let snap):
+            store.saveSnapshot(snap)
+            store.authState = .ok
+            return true
+        case .needsLogin:
+            store.authState = .needsLogin
+            return false
+        case .transient:
+            return false // keep last snapshot, leave authState untouched
+        }
     }
 }
