@@ -14,7 +14,7 @@ targets:
   ClaudeUsage:
     type: application
     platform: iOS
-    sources: [App]
+    sources: [App, Shared]
     dependencies:
       - package: ClaudeUsageCore
       - target: ClaudeUsageWidgetExtension
@@ -30,7 +30,7 @@ targets:
   ClaudeUsageWidgetExtension:
     type: app-extension
     platform: iOS
-    sources: [Widget]
+    sources: [Widget, Shared]
     dependencies:
       - package: ClaudeUsageCore
     settings:
