@@ -99,6 +99,23 @@ final class UsageService: NSObject, WKNavigationDelegate {
         }
     }
 
+    /// Copies claude.ai cookies + the page User-Agent into the Keychain so the
+    /// background task can replay an authenticated URLSession request.
+    func harvestCredentials() async {
+        let ua = (try? await webView.callAsyncJavaScript(
+            "return navigator.userAgent;", arguments: [:], in: nil, contentWorld: .page)) as? String
+        guard let ua, !ua.isEmpty else { return }
+
+        let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
+        let cookies: [HTTPCookie] = await withCheckedContinuation { cont in
+            cookieStore.getAllCookies { cont.resume(returning: $0) }
+        }
+        let claude = cookies.filter { $0.domain.contains("claude.ai") }
+        guard !claude.isEmpty else { return }
+        let header = claude.map { "\($0.name)=\($0.value)" }.joined(separator: "; ")
+        Keychain.saveCredentials(Credentials(cookieHeader: header, userAgent: ua))
+    }
+
     private struct JSResult { let status: Int; let toLogin: Bool; let body: String }
 
     private func jsFetch(path: String) async -> JSResult? {

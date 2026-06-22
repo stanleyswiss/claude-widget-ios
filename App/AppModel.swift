@@ -39,6 +39,7 @@ final class AppModel: ObservableObject {
         switch await service.refresh() {
         case .success(let s):
             snapshot = s; needsLogin = false; lastError = nil
+            await service.harvestCredentials()
         case .needsLogin:
             needsLogin = true
         case .transient(let why):
@@ -49,6 +50,7 @@ final class AppModel: ObservableObject {
 
     func logout() async {
         await service.clearSession()
+        Keychain.deleteCredentials()
         snapshot = nil
         needsLogin = true
         service.loadSite()
