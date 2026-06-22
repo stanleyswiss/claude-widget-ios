@@ -65,16 +65,11 @@ struct RootView: View {
 }
 
 struct WindowRow: View {
+    @EnvironmentObject var model: AppModel
     let title: String
     let window: UsageWindow
 
-    private var color: Color {
-        switch UsageLevel(utilization: window.utilization) {
-        case .calm: return .green
-        case .warn: return .orange
-        case .critical: return .red
-        }
-    }
+    private var color: Color { UsageTint.resolve(utilization: window.utilization, hex: model.accentColorHex) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {

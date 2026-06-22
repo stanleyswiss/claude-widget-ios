@@ -14,6 +14,7 @@ final class AppModel: ObservableObject {
     @Published var needsLogin = false
     @Published var lastError: String?
     @Published var isRefreshing = false
+    @Published var accentColorHex: String = UsageTint.defaultAccentHex
 
     init() {
         let defaults = UserDefaults(suiteName: AppConfig.appGroupID)
@@ -22,7 +23,14 @@ final class AppModel: ObservableObject {
         self.service = UsageService(store: store)
         self.snapshot = store.loadSnapshot()
         self.needsLogin = store.authState == .needsLogin
+        self.accentColorHex = store.accentColorHex ?? UsageTint.defaultAccentHex
         service.loadSite()
+    }
+
+    func setAccent(_ hex: String) {
+        accentColorHex = hex
+        store.accentColorHex = hex
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func refresh() async {
